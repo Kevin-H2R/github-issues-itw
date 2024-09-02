@@ -1,9 +1,20 @@
 const express = require('express')
 const router = express.Router()
 
+
+// Hard coded issues
+// TODO: grab this data from a real DB
+const issues = [
+  {id: 1, title: '1st issue', description: 'The first issue ever'},
+  {id: 2, title: '2nd issue', description: 'The second issue ever'},
+  {id: 3, title: '3rd issue', description: 'The third issue ever'},
+  {id: 4, title: '4th issue', description: 'The fourth issue ever'},
+  {id: 5, title: '5th issue', description: 'The fifth issue ever'},
+]
+
 // Returns all issues
 router.get('/', (req, res) => {
-  res.json('Gets all issues')
+  res.json({data: issues})
 })
 
 // Returns a single issue by ID
