@@ -72,5 +72,23 @@ router.put('/', (req, res) => {
   }
 })
 
+router.delete('/', (req, res) => {
+  const id = Number.parseInt(req.body.id)
+  if (Number.isNaN(id)) {
+    return res.status(401).json({message: 'Issue id must be a number'})
+  }
+  const filtered = issues.filter(issue => issue.id === id)
+  if (filtered.length === 0) {
+    return res.status(404).json({message: 'Issue not found'})
+  }
+  // Should never happen
+  if (filtered.length > 1) {
+    return res.status(409).json({message: 'Conflict, multiple issues found with the same ID'})
+  }
+  const deleted = issues.splice(issues.indexOf(filtered[0]), 1);
+  console.log(deleted)
+  return res.json({message: `Issue with id ${filtered[0].id} was deleted`})
+})
+
 
 module.exports = router
