@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const requestValidator = require('../utils/requestValidator')
 
 
 // Hard coded issues
@@ -36,7 +37,24 @@ router.get('/:id', (req, res) => {
 
 // Updates an existing issue
 router.post('/', (req, res) => {
-  res.json('Updates issue with id: ' + req.body.id)
+  try {
+    const {id, title, description} = requestValidator.validatePost(req)
+    const filtered = issues.filter(issue => issue.id === id)
+    if (filtered.length === 0) {
+      return res.status(404).json({message: 'Issue not found'})
+    }
+    // Should never happen
+    if (filtered.length > 1) {
+      return res.status(409).json({message: 'Conflict, multiple issues found with the same ID'})
+    }
+    const index = issues.indexOf(filtered[0])
+    issues[index].title = title
+    issues[index].description = description
+    console.log(issues[index])
+    return res.json({message: `Issues with id ${id} was updated successfully`})
+  } catch (err) {
+    return res.status(401).json({message: err.message})
+  }
 })
 
 router.put('/', (req, res) => {
