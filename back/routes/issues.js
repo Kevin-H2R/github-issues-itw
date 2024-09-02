@@ -51,14 +51,25 @@ router.post('/', (req, res) => {
     issues[index].title = title
     issues[index].description = description
     console.log(issues[index])
-    return res.json({message: `Issues with id ${id} was updated successfully`})
+    return res.json({message: `Issue with id ${id} was updated successfully`})
   } catch (err) {
     return res.status(401).json({message: err.message})
   }
 })
 
 router.put('/', (req, res) => {
-  res.json('Creates issue with id: ' + req.body.id)
+  try {
+    const {title, description} = requestValidator.validatePut(req)
+    const lastId = issues.reduce((acc, cur) => {
+      return cur.id > acc ? cur.id : acc
+    }, 0)
+    const newItem = {id: lastId + 1, title, description}
+    issues.push(newItem)
+    console.log(newItem)
+    return res.json({message: `Issue with id ${lastId + 1} was created successfully`})
+  } catch (err) {
+    return res.status(401).json({message: err.message})
+  }
 })
 
 
