@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [statusCode, setStatusCode] = useState(null)
+  const [response, setResponse] = useState("")
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main">
+      <div className="main__left">
+        <h2>Get ALL</h2>
+        <h2>Get ID:</h2>
+        <h2>Create:</h2>
+        <h2>Update:</h2>
+        <h2>Delete:</h2>
+      </div>
+      <div className="main__right">
+        <div className="row">
+          <div>Status Code:</div>
+          {statusCode && <h2>{statusCode}</h2>}
+        </div>
+        <div>Body:</div>
+        <div>{response}</div>
+      </div>
     </div>
   );
 }
