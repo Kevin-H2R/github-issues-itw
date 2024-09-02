@@ -14,12 +14,24 @@ const issues = [
 
 // Returns all issues
 router.get('/', (req, res) => {
-  res.json({data: issues})
+  return res.json({data: issues})
 })
 
 // Returns a single issue by ID
 router.get('/:id', (req, res) => {
-  res.json('Gets issue with id: ' + req.params.id)
+  const id = Number.parseInt(req.params.id)
+  if (Number.isNaN(id)) {
+    return res.status(401).json({message: 'Issue id must be a number'})
+  }
+  const filtered = issues.filter(issue => issue.id === id)
+  if (filtered.length === 0) {
+    return res.status(404).json({message: 'Issue not found'})
+  }
+  // Should never happen
+  if (filtered.length > 1) {
+    return res.status(409).json({message: 'Conflict, multiple issues found with the same ID'})
+  }
+  return res.json(filtered[0])
 })
 
 // Updates an existing issue
