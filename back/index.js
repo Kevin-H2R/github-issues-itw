@@ -11,6 +11,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/issues', issuesRouter)
-app.listen(3000, () => {
+app.listen(4000, () => {
   console.log("Hi Sitemate ! App up and running")
 })
